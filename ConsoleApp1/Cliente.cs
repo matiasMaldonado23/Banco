@@ -3,23 +3,27 @@
     class Cliente
     {
         public string Nombre { get; set; }
-        public string apellido { get; set; }
-        public double Efectivo { get; set; }
-        public double saldo { get; set; }
-        public int cbu { get; set; } = 0;
+        public string Apellido { get; set; }
+        public double Efectivo { get; private set; }
+        public double Saldo => Efectivo+Cuenta.Saldo;
+        public int Cbu => Cuenta.Cbu;
 
         public Cuenta Cuenta { get; set; }
         public Cliente()
         {
             Cuenta = new Cuenta();
             Efectivo = 0;
-            saldo = 0;
         }
         public void Acreditar(double monto)
         {
-            saldo = saldo + monto * 0.8;
+            Efectivo = Saldo + monto * 0.8;
             Cuenta.Acreditar(monto * 0.2);
         }
-        public void Debitar()
+        public void Debitar(double monto)
+        {
+            Efectivo = Saldo - monto * 0.8;
+            Cuenta.Debitar(monto * 0.2);
+        }
+        public bool TieneAlMenos(double monto) => Saldo >= monto;
     }
 }
